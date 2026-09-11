@@ -224,9 +224,10 @@ export default function FilesPage({ onBack }) {
           position: 'fixed',
           top: '50%',
           left: '50%',
-          width: '85vw',
+          width: '92vw',
           maxWidth: '900px',
           height: 'auto',
+          maxHeight: '85vh',
           zIndex: 1000,
           transform: activeFolder ? 'translate(-50%, -50%) scale(1)' : getClosedTransform(),
           opacity: activeFolder ? 1 : 0,
@@ -234,7 +235,9 @@ export default function FilesPage({ onBack }) {
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
           borderRadius: '12px',
           overflow: 'hidden',
-          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+          display: 'flex',
+          flexDirection: 'column'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -257,83 +260,87 @@ export default function FilesPage({ onBack }) {
           title="Close window"
         />
 
-        {/* Explorer Background Image */}
-        <img
-          src={getActiveExplorerImage()}
-          alt="File Explorer View"
-          style={{ width: '100%', height: 'auto', display: 'block' }}
-        />
+        {/* Container wrapping image and grid natively to scale together */}
+        <div style={{ position: 'relative', width: '100%', display: 'flex' }}>
+          {/* Explorer Background Image */}
+          <img
+            src={getActiveExplorerImage()}
+            alt="File Explorer View"
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
 
-        {/* ================= FILE ICONS GRID OVERLAY (NATIVE ANCHOR TAGS FOR VERCEL) ================= */}
-        {activeFolder && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '90px',
-              left: '280px',
-              right: '40px',
-              bottom: '40px',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(95px, 1fr))',
-              gap: '16px',
-              padding: '16px',
-              alignContent: 'start',
-              overflowY: 'auto'
-            }}
-          >
-            {folderFiles[activeFolder]?.map((file) => (
-              <a
-                key={file.id}
-                href={file.link !== 'PASTE_GDRAIVE_LINK_HERE' ? file.link : '#'}
-                target={file.link !== 'PASTE_GDRAIVE_LINK_HERE' ? '_blank' : '_self'}
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                  setSelectedFile(file);
-                  if (file.link === 'PASTE_GDRAIVE_LINK_HERE') {
-                    e.preventDefault();
-                    alert('Google Drive link has not been added for this file yet.');
-                  }
-                }}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
-                  width: '90px',
-                  padding: '8px 4px',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  textDecoration: 'none',
-                  backgroundColor: selectedFile?.id === file.id ? 'rgba(42, 24, 21, 0.1)' : 'transparent',
-                  border: selectedFile?.id === file.id ? '1px solid rgba(42, 24, 21, 0.15)' : '1px solid transparent',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <img
-                  src={fileIcon}
-                  alt={file.name}
-                  style={{ width: '42px', height: '42px', objectFit: 'contain', marginBottom: '6px' }}
-                />
-                <span
+          {/* ================= RESPONSIVE FILE ICONS GRID OVERLAY ================= */}
+          {activeFolder && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '12%',
+                left: '30%',
+                right: '4%',
+                bottom: '6%',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(75px, 1fr))',
+                gap: '10px',
+                padding: '8px',
+                alignContent: 'start',
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch'
+              }}
+            >
+              {folderFiles[activeFolder]?.map((file) => (
+                <a
+                  key={file.id}
+                  href={file.link !== 'PASTE_GDRAIVE_LINK_HERE' ? file.link : '#'}
+                  target={file.link !== 'PASTE_GDRAIVE_LINK_HERE' ? '_blank' : '_self'}
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    setSelectedFile(file);
+                    if (file.link === 'PASTE_GDRAIVE_LINK_HERE') {
+                      e.preventDefault();
+                      alert('Google Drive link has not been added for this file yet.');
+                    }
+                  }}
                   style={{
-                    fontSize: '10px',
-                    color: '#2a1815',
-                    textAlign: 'center',
-                    fontWeight: 500,
-                    lineHeight: '1.2',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    width: '100%'
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    width: '100%',
+                    padding: '6px 2px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    backgroundColor: selectedFile?.id === file.id ? 'rgba(42, 24, 21, 0.1)' : 'transparent',
+                    border: selectedFile?.id === file.id ? '1px solid rgba(42, 24, 21, 0.15)' : '1px solid transparent',
+                    transition: 'all 0.2s ease'
                   }}
                 >
-                  {file.name}
-                </span>
-              </a>
-            ))}
-          </div>
-        )}
+                  <img
+                    src={fileIcon}
+                    alt={file.name}
+                    style={{ width: '36px', height: '36px', objectFit: 'contain', marginBottom: '4px' }}
+                  />
+                  <span
+                    style={{
+                      fontSize: '9px',
+                      color: '#2a1815',
+                      textAlign: 'center',
+                      fontWeight: 500,
+                      lineHeight: '1.1',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      width: '100%'
+                    }}
+                  >
+                    {file.name}
+                  </span>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
     </div>
