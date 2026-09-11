@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;700;900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  background-color: #faf7f2;
+}
+
+.page-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #faf7f2;
+  overflow: hidden;
+}
+
+/* Cream Background with Pink Grid Lines */
+.canvas-board {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #FAF5EE;
+  background-image:
+    linear-gradient(to right, rgba(247, 180, 190, 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(247, 180, 190, 0.4) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* Base Desktop Item Styling */
+.desktop-item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease;
+  z-index: 5;
+}
+
+.desktop-item:hover {
+  transform: scale(1.05);
+}
+
+.desktop-item span {
+  font-size: 11px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* Clamped Position Boundaries to Stop Collisions */
+.item-files {
+  top: clamp(12px, 12vh, 120px);
+  left: clamp(20px, 26vw, 360px);
+}
+
+.item-finder {
+  top: clamp(160px, 40vh, 360px);
+  left: clamp(10px, 14vw, 220px);
+}
+
+.item-interns {
+  top: clamp(12px, 14vh, 140px);
+  right: clamp(20px, 24vw, 340px);
+}
+
+.item-settings {
+  top: clamp(150px, 36vh, 320px);
+  right: clamp(10px, 15vw, 220px);
+}
+
+.item-photobooth {
+  bottom: clamp(12px, 10vh, 100px);
+  left: clamp(10px, 16vw, 240px);
+}
+
+.item-about {
+  bottom: clamp(140px, 22vh, 260px);
+  left: clamp(120px, 32vw, 440px);
+}
+
+.item-jabee {
+  bottom: clamp(8px, 8vh, 80px);
+  right: clamp(240px, 34vw, 520px);
+}
+
+.item-contact {
+  bottom: clamp(180px, 32vh, 320px);
+  right: clamp(10px, 16vw, 240px);
+}
+
+/* Fluid Small Folders with Larger Minimum Sizes */
+.folder-icon.small {
+  position: relative;
+  width: clamp(56px, 5vw, 68px);
+  height: clamp(40px, 3.6vw, 48px);
+}
+
+.folder-icon.small .folder-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f2b435;
+  border-radius: clamp(5px, 0.5vw, 8px);
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.folder-icon.small .folder-tab {
+  position: absolute;
+  top: clamp(-5px, -0.4vw, -6px);
+  left: 0;
+  width: 40%;
+  height: 25%;
+  background-color: #f2b435;
+  border-radius: 4px 4px 0 0;
+  z-index: 1;
+}
+
+.folder-icon.small .folder-paper {
+  position: absolute;
+  top: clamp(-3px, -0.3vw, -4px);
+  left: 5%;
+  width: 90%;
+  height: 35%;
+  background-color: #ffffff;
+  border-radius: 3px 3px 0 0;
+  z-index: 1;
+}
+
+/* Fluid Photo Cards */
+.photo-card {
+  background: #ffffff;
+  padding: clamp(3px, 0.3vw, 5px);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.photo-card img {
+  width: clamp(60px, 5.5vw, 72px);
+  height: clamp(44px, 4vw, 52px);
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.photobooth-card img.photobooth-img {
+  width: clamp(48px, 4.5vw, 58px);
+  height: clamp(60px, 5.5vw, 72px);
+  object-fit: contain;
+  background-color: #f8f8f8;
+}
+
+.photo-card span,
+.desktop-item span {
+  font-size: clamp(9px, 0.8vw, 11px);
+  color: #666;
+  margin-top: 3px;
+}
+
+/* Fluid App Icons */
+.settings-icon,
+.finder-icon {
+  width: clamp(56px, 5.5vw, 72px);
+  height: clamp(56px, 5.5vw, 72px);
+  object-fit: contain;
+}
+
+
+/* Hero Folder Wrapper - Dynamic Resizing */
+.hero-center-container {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(140px, 20vw, 280px);
+  container-type: inline-size;
+  z-index: 3;
+}
+
+.hero-center {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Base Folder Back & Paper Insert */
+.folder-back {
+  position: relative;
+  width: 100%;
+  height: 62.5cqw;
+  z-index: 1;
+  margin-top: 23cqw;
+}
+
+.folder-back .folder-body {
+  width: 100%;
+  height: 100%;
+  background-color: #f2b435;
+  border-radius: 7.6cqw;
+}
+
+.folder-back .folder-tab {
+  position: absolute;
+  top: -6cqw;
+  left: 0;
+  width: 38cqw;
+  height: 9cqw;
+  background-color: #f2b435;
+  border-radius: 3.8cqw 3.8cqw 0 0;
+}
+
+.folder-back .folder-paper {
+  position: absolute;
+  top: -3.8cqw;
+  left: 3.8%;
+  width: 92.4%;
+  height: 15cqw;
+  background-color: #ffffff;
+  border-radius: 3.8cqw 3.8cqw 0 0;
+  z-index: 1;
+}
+
+/* Typography Group Bound Directly to Folder Width */
+.title-text-group {
+  position: absolute;
+  top: -11.5cqw;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.script-title {
+  font-family: 'Caveat', cursive;
+  font-size: 53.8cqw;
+  color: #f8b4be;
+  position: absolute;
+  top: -40cqw;
+  left: -9.6cqw;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.bold-title {
+  font-size: 54.6cqw;
+  font-weight: 900;
+  color: #2a1815;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Front Overlay */
+.folder-front-overlay {
+  position: absolute;
+  top: 23cqw;
+  width: 100%;
+  height: 62.5cqw;
+  background-color: #f2b435;
+  opacity: 0.82;
+  border-radius: 7.6cqw;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.year {
+  font-size: 10cqw;
+  font-weight: 400;
+  color: #2a1815;
+  margin-top: 10.7cqw;
+  letter-spacing: 2px;
+  z-index: 4;
+}
+
+/* Tighter Clustering and Scaled Center Folder for Narrow Viewports */
+@media (max-width: 900px) {
+  .hero-center-container {
+    width: clamp(130px, 22vw, 220px);
+  }
+
+  .item-files {
+    top: clamp(20px, 12vh, 80px);
+    left: clamp(20px, 20vw, 180px);
+  }
+
+  .item-finder {
+    top: clamp(160px, 42vh, 320px);
+    left: clamp(12px, 8vw, 80px);
+  }
+
+  .item-interns {
+    top: clamp(20px, 12vh, 80px);
+    right: clamp(20px, 18vw, 160px);
+  }
+
+  .item-settings {
+    top: clamp(160px, 40vh, 300px);
+    right: clamp(12px, 8vw, 80px);
+  }
+
+  .item-photobooth {
+    bottom: clamp(16px, 10vh, 80px);
+    left: clamp(12px, 10vw, 100px);
+  }
+
+  .item-about {
+    bottom: clamp(120px, 20vh, 180px);
+    left: clamp(120px, 32vw, 260px);
+  }
+
+  .item-jabee {
+    bottom: clamp(100px, 10vh, 200px);
+    right: clamp(12px, 22vw, 220px);
+  }
+
+  .item-contact {
+    bottom: clamp(220px, 32vh, 320px);
+    right: clamp(10px, 15vw, 220px);
+  }
+}
