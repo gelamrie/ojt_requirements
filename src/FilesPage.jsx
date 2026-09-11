@@ -74,13 +74,6 @@ export default function FilesPage({ onBack }) {
     }
   };
 
-  const handleFileClick = (file) => {
-    setSelectedFile(file);
-    if (file.link && file.link !== 'PASTE_GDRAIVE_LINK_HERE') {
-      window.open(file.link, '_blank');
-    }
-  };
-
   return (
     <div
       className="canvas-board"
@@ -271,7 +264,7 @@ export default function FilesPage({ onBack }) {
           style={{ width: '100%', height: 'auto', display: 'block' }}
         />
 
-        {/* ================= FILE ICONS GRID OVERLAY ================= */}
+        {/* ================= FILE ICONS GRID OVERLAY (NATIVE ANCHOR TAGS FOR VERCEL) ================= */}
         {activeFolder && (
           <div
             style={{
@@ -289,9 +282,18 @@ export default function FilesPage({ onBack }) {
             }}
           >
             {folderFiles[activeFolder]?.map((file) => (
-              <div
+              <a
                 key={file.id}
-                onClick={() => handleFileClick(file)}
+                href={file.link !== 'PASTE_GDRAIVE_LINK_HERE' ? file.link : '#'}
+                target={file.link !== 'PASTE_GDRAIVE_LINK_HERE' ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  setSelectedFile(file);
+                  if (file.link === 'PASTE_GDRAIVE_LINK_HERE') {
+                    e.preventDefault();
+                    alert('Google Drive link has not been added for this file yet.');
+                  }
+                }}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -301,6 +303,7 @@ export default function FilesPage({ onBack }) {
                   padding: '8px 4px',
                   borderRadius: '8px',
                   cursor: 'pointer',
+                  textDecoration: 'none',
                   backgroundColor: selectedFile?.id === file.id ? 'rgba(42, 24, 21, 0.1)' : 'transparent',
                   border: selectedFile?.id === file.id ? '1px solid rgba(42, 24, 21, 0.15)' : '1px solid transparent',
                   transition: 'all 0.2s ease'
@@ -327,7 +330,7 @@ export default function FilesPage({ onBack }) {
                 >
                   {file.name}
                 </span>
-              </div>
+              </a>
             ))}
           </div>
         )}
