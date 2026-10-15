@@ -25,7 +25,7 @@ const folderFiles = {
     { id: 'b8', name: 'Consent Form', link: 'https://drive.google.com/file/d/19q4SeCejNqVnnt0o7q7t5FNLjIkHk0xF/view?usp=sharing' },
     { id: 'b9', name: 'Curriculum Vitae', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
     { id: 'b10', name: 'Insurance', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
-    { id: 'b11', name: 'Medical Certificate', link: 'https://drive.google.com/file/d/1qwoRBP3yfEGYJK3tR6srlUWCmwdCsUJQ/view?usp=sharing' },
+    { id: 'b11', name: 'Medical Certificate', link: 'https://drive.google.com/file/d/1_9It8bxDPFw2LDyd44kN_xknsGtR5ToK/view?usp=sharing' },
   ],
   during: [
     { id: 'd1', name: 'Daily Time Record', link: 'PASTE_GDRAIVE_LINK_HERE' },
