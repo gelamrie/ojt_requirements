@@ -3,6 +3,7 @@ import './App.css';
 import HeroFolder from './HeroFolder';
 import FilesPage from './FilesPage'; // <-- Fixed default import
 import PhotoLightbox from './PhotoLightbox';
+import AboutPage from './AboutPage';
 
 import finderIcon from './assets/finder.png';
 import settingsIcon from './assets/settings.png';
@@ -46,9 +47,28 @@ export default function App() {
     };
   };
 
+  // Props that make a desktop folder open a page (mouse, touch and keyboard)
+  const pageProps = (page, label) => ({
+    role: 'button',
+    tabIndex: 0,
+    'aria-label': `Open ${label}`,
+    onClick: () => setCurrentPage(page),
+    onKeyDown: (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setCurrentPage(page);
+      }
+    },
+  });
+
   // Renders ONLY the Files component
   if (currentPage === 'files') {
     return <FilesPage onBack={() => setCurrentPage('desktop')} />; // <-- Updated component name
+  }
+
+  // Renders ONLY the About Me page
+  if (currentPage === 'about') {
+    return <AboutPage onBack={() => setCurrentPage('desktop')} />;
   }
 
   // Renders ONLY Desktop Landing Page
@@ -58,7 +78,7 @@ export default function App() {
         {/* Top Left Elements */}
         <div
           className="desktop-item item-files"
-          onClick={() => setCurrentPage('files')}
+          {...pageProps('files', 'files')}
           style={{ cursor: 'pointer' }}
         >
           <div className="folder-icon small">
@@ -96,7 +116,11 @@ export default function App() {
           </div>
         </div>
 
-        <div className="desktop-item item-about">
+        <div
+          className="desktop-item item-about"
+          {...pageProps('about', 'about me')}
+          style={{ cursor: 'pointer' }}
+        >
           <div className="folder-icon small">
             <div className="folder-tab" />
             <div className="folder-paper" />

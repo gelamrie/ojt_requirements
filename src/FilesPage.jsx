@@ -29,7 +29,7 @@ const folderFiles = {
   ],
   during: [
     { id: 'd1', name: 'Daily Time Record', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'd2', name: 'Week 1: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+    { id: 'd2', name: 'Week 1: Weekly Progress Report', link: 'https://drive.google.com/file/d/1rXqVF2sa5X32rDSwAdmqGx92tzwgmRSo/view?usp=sharing' },
     { id: 'd3', name: 'Week 2: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
     { id: 'd4', name: 'Week 3: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
     { id: 'd5', name: 'Week 4: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
@@ -375,7 +375,10 @@ export default function FilesPage({ onBack }) {
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
-        backgroundColor: '#f7f4ee'
+        backgroundColor: '#f7f4ee',
+        // Keep the folder stack clear of the title + hint at the top
+        boxSizing: 'border-box',
+        paddingTop: '90px'
       }}
     >
       <style>{pageStyles}</style>
@@ -402,7 +405,7 @@ export default function FilesPage({ onBack }) {
           right: 0,
           textAlign: 'center',
           pointerEvents: 'none',
-          zIndex: 1
+          zIndex: 5
         }}
       >
         <h1
@@ -431,8 +434,10 @@ export default function FilesPage({ onBack }) {
       {/* Scalable Container for Folders Only */}
       <div
         style={{
-          width: '90%',
-          maxWidth: '1000px',
+          // The three stacked folders are about 0.65x as tall as they are wide, so
+          // cap the width by the space left under the title. The whole stack then
+          // always fits on screen instead of running off the bottom.
+          width: 'min(90vw, 1000px, calc((100vh - 120px) * 1.53))',
           position: 'relative',
           margin: '0 auto',
           display: 'flex',
