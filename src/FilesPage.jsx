@@ -29,7 +29,14 @@ const folderFiles = {
   ],
   during: [
     { id: 'd1', name: 'Daily Time Record', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'd2', name: 'Weekly Progress Report', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'd2', name: 'Week 1: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+    { id: 'd3', name: 'Week 2: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+    { id: 'd4', name: 'Week 3: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+    { id: 'd5', name: 'Week 4: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+    { id: 'd6', name: 'Week 5: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+    { id: 'd7', name: 'Week 6: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+    { id: 'd8', name: 'Week 7: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+
   ],
   after: [
     { id: 'a1', name: 'Training Supervisor Form', link: 'PASTE_GDRAIVE_LINK_HERE' },
