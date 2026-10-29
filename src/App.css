@@ -58,43 +58,43 @@ body {
 
 /* Clamped Position Boundaries to Stop Collisions */
 .item-files {
-  top: clamp(12px, 12vh, 120px);
-  left: clamp(20px, 26vw, 360px);
+  top: clamp(32px, 8vh, 85px);
+  left: clamp(60px, 16vw, 240px);
 }
 
 .item-finder {
-  top: clamp(160px, 40vh, 360px);
-  left: clamp(10px, 14vw, 220px);
+  top: clamp(160px, 35vh, 280px);
+  left: clamp(40px, 10vw, 160px);
 }
 
 .item-interns {
-  top: clamp(12px, 14vh, 140px);
-  right: clamp(20px, 24vw, 340px);
+  top: clamp(32px, 8vh, 85px);
+  right: clamp(60px, 16vw, 240px);
 }
 
 .item-settings {
-  top: clamp(150px, 36vh, 320px);
-  right: clamp(10px, 15vw, 220px);
+  top: clamp(160px, 35vh, 280px);
+  right: clamp(40px, 10vw, 160px);
 }
 
 .item-photobooth {
-  bottom: clamp(12px, 10vh, 100px);
-  left: clamp(10px, 16vw, 240px);
+  bottom: clamp(20px, 6vh, 70px);
+  left: clamp(40px, 12vw, 180px);
 }
 
 .item-about {
-  bottom: clamp(140px, 22vh, 260px);
-  left: clamp(120px, 32vw, 440px);
+  bottom: clamp(100px, 17vh, 170px);
+  left: clamp(110px, 24vw, 360px);
 }
 
 .item-jabee {
-  bottom: clamp(8px, 8vh, 80px);
-  right: clamp(240px, 34vw, 520px);
+  bottom: clamp(20px, 6vh, 70px);
+  right: clamp(160px, 26vw, 360px);
 }
 
 .item-contact {
-  bottom: clamp(180px, 32vh, 320px);
-  right: clamp(10px, 16vw, 240px);
+  bottom: clamp(140px, 23vh, 230px);
+  right: clamp(40px, 13vw, 200px);
 }
 
 /* Fluid Small Folders with Larger Minimum Sizes */
@@ -286,49 +286,123 @@ body {
   z-index: 4;
 }
 
-/* Tighter Clustering and Scaled Center Folder for Narrow Viewports */
-@media (max-width: 900px) {
+/* Tighter Clustering for Tablets and Medium Viewports */
+@media (max-width: 900px) and (min-width: 601px) {
   .hero-center-container {
     width: clamp(130px, 22vw, 220px);
   }
 
   .item-files {
-    top: clamp(20px, 12vh, 80px);
-    left: clamp(20px, 20vw, 180px);
+    top: clamp(64px, 10vh, 85px);
+    left: clamp(20px, 6vw, 60px);
   }
 
   .item-finder {
-    top: clamp(160px, 42vh, 320px);
-    left: clamp(12px, 8vw, 80px);
+    top: clamp(175px, 31vh, 240px);
+    left: clamp(16px, 5vw, 50px);
   }
 
   .item-interns {
-    top: clamp(20px, 12vh, 80px);
-    right: clamp(20px, 18vw, 160px);
+    top: clamp(64px, 10vh, 85px);
+    right: clamp(20px, 6vw, 60px);
   }
 
   .item-settings {
-    top: clamp(160px, 40vh, 300px);
-    right: clamp(12px, 8vw, 80px);
+    top: clamp(175px, 31vh, 240px);
+    right: clamp(16px, 5vw, 50px);
   }
 
   .item-photobooth {
-    bottom: clamp(16px, 10vh, 80px);
-    left: clamp(12px, 10vw, 100px);
+    bottom: clamp(16px, 4vh, 45px);
+    left: clamp(16px, 5vw, 50px);
   }
 
   .item-about {
-    bottom: clamp(120px, 20vh, 180px);
-    left: clamp(120px, 32vw, 260px);
+    bottom: clamp(90px, 15vh, 130px);
+    left: clamp(70px, 18vw, 140px);
   }
 
   .item-jabee {
-    bottom: clamp(100px, 10vh, 200px);
-    right: clamp(12px, 22vw, 220px);
+    bottom: clamp(16px, 4vh, 45px);
+    right: clamp(90px, 18vw, 160px);
   }
 
   .item-contact {
-    bottom: clamp(220px, 32vh, 320px);
-    right: clamp(10px, 15vw, 220px);
+    bottom: clamp(110px, 18vh, 160px);
+    right: clamp(16px, 5vw, 50px);
+  }
+}
+
+/* Dedicated Mobile / Phone Optimization */
+@media (max-width: 600px) {
+  .hero-center-container {
+    top: 47%;
+    width: clamp(115px, 32vw, 140px);
+  }
+
+  /* Top tier: files and interns clearing navigation bar */
+  .item-files {
+    top: clamp(68px, 10vh, 82px);
+    left: 16px;
+  }
+
+  .item-interns {
+    top: clamp(68px, 10vh, 82px);
+    right: 16px;
+  }
+
+  /* Mid-top tier: finder and settings elevated above portfolio title */
+  .item-finder {
+    top: clamp(155px, 23vh, 185px);
+    left: 16px;
+  }
+
+  .item-settings {
+    top: clamp(155px, 23vh, 185px);
+    right: 16px;
+  }
+
+  /* Mid-bottom tier: folders flanking below the center folder */
+  .item-about {
+    bottom: clamp(135px, 20vh, 170px);
+    left: 18px;
+  }
+
+  .item-contact {
+    bottom: clamp(135px, 20vh, 170px);
+    right: 18px;
+  }
+
+  /* Bottom tier: photo cards grounded with safe-area spacing */
+  .item-photobooth {
+    bottom: max(20px, calc(env(safe-area-inset-bottom, 0px) + 16px));
+    left: 20px;
+  }
+
+  .item-jabee {
+    bottom: max(20px, calc(env(safe-area-inset-bottom, 0px) + 16px));
+    right: 20px;
+  }
+
+  /* Compact, crisp touch icon scales for phone screens */
+  .folder-icon.small {
+    width: 50px;
+    height: 36px;
+  }
+
+  .settings-icon,
+  .finder-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .photo-card img {
+    width: 52px;
+    height: 39px;
+  }
+
+  .photobooth-card img.photobooth-img {
+    width: 40px;
+    height: 52px;
   }
 }

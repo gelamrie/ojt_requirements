@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-
+import PortfolioNav from './PortfolioNav';
 import aboutMeImg from './assets/about-me.png';
 
 const styles = `
@@ -36,59 +36,7 @@ const styles = `
   user-select: none;
 }
 
-/* Same look as the Desktop button on the Files page */
-.about-back {
-  position: absolute;
-  top: 24px;
-  left: 32px;
-  z-index: 300;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 44px;
-  padding: 0 18px 0 14px;
-  background: #fffdf8;
-  color: #2a1815;
-  border: 1.5px solid #2a1815;
-  border-radius: 999px;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 3px 3px 0 #2a1815;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-}
-
-.about-back:hover {
-  background: #fff3d6;
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 #2a1815;
-}
-
-.about-back:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 #2a1815;
-}
-
-.about-back:focus-visible {
-  outline: 3px solid #f0b942;
-  outline-offset: 3px;
-}
-
-.about-back-arrow {
-  display: inline-block;
-  font-size: 18px;
-  line-height: 1;
-  transition: transform 0.2s ease;
-}
-
-.about-back:hover .about-back-arrow {
-  transform: translateX(-4px);
-}
-
 @media (max-width: 640px) {
-  .about-back { padding: 0 14px; top: 16px; left: 16px; }
-  .about-back-label { display: none; }
   .about-stage { width: min(96vw, calc((100vh - 100px) * 1.6)); }
 }
 
@@ -96,37 +44,23 @@ const styles = `
   .about-img {
     animation: none !important;
   }
-  .about-back,
-  .about-back-arrow {
-    transition: none !important;
-  }
 }
 `;
 
-export default function AboutPage({ onBack }) {
-  // Esc goes back to the desktop
+export default function AboutPage({ onNavigate }) {
   useEffect(() => {
     const handleKey = (e) => {
-      if (e.key === 'Escape') onBack();
+      if (e.key === 'Escape') onNavigate('back');
     };
-    document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
-  }, [onBack]);
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onNavigate]);
 
   return (
     <div className="canvas-board about-page">
       <style>{styles}</style>
 
-      <button
-        type="button"
-        className="about-back"
-        onClick={onBack}
-        title="Back to Desktop (Esc)"
-        aria-label="Back to Desktop"
-      >
-        <span className="about-back-arrow" aria-hidden="true">←</span>
-        <span className="about-back-label">Desktop</span>
-      </button>
+      <PortfolioNav active="about" onNavigate={onNavigate} />
 
       <main className="about-stage">
         <img

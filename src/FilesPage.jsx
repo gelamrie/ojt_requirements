@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-
+import PortfolioNav from './PortfolioNav';
 import beforeOjtImg from './assets/before-ojt.png';
 import duringOjtImg from './assets/during-ojt.png';
 import afterOjtImg from './assets/after-ojt.png';
@@ -13,38 +13,83 @@ import fileExplorerAfter from './assets/file-explorer-after.png';
 import fileIcon from './assets/file-icon.png';
 
 // Define the file items with Google Drive link placeholders for each folder
+const duringSubfolders = {
+  'weekly-reports': {
+    title: 'Weekly Reports',
+    files: [
+      { id: 'wr-1', type: 'file', name: 'Week 1: Weekly Progress Report', link: 'https://drive.google.com/file/d/1tZYa3mLoZUSKNSjU5qRL7qzKCpzWZuQV/view?usp=sharing' },
+      { id: 'wr-2', type: 'file', name: 'Week 2: Weekly Progress Report', link: 'https://drive.google.com/file/d/1pb556r0U31hRGAHanGNtsNJHgcyEj7yb/view?usp=sharing' },
+      { id: 'wr-3', type: 'file', name: 'Week 3: Weekly Progress Report', link: 'https://drive.google.com/file/d/1m-UA-A6ZGI8JPNtPAHFnwixcDgYnOuf1/view?usp=sharing' },
+      { id: 'wr-4', type: 'file', name: 'Week 4: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+      { id: 'wr-5', type: 'file', name: 'Week 5: Weekly Progress Report', link: 'https://drive.google.com/file/d/1-_jl6SAjiCKYRw-fnRsdVpmI_rgWiu8h/view?usp=sharing' },
+      { id: 'wr-6', type: 'file', name: 'Week 6: Weekly Progress Report', link: 'https://drive.google.com/file/d/1XNstsdjFJrTdI2SwSR97AS4tnD0EHePL/view?usp=sharing' },
+      { id: 'wr-7', type: 'file', name: 'Week 7: Weekly Progress Report', link: 'https://drive.google.com/file/d/1DD_PbPP61OWFW9PJkD6w51dPHzm3a0Lg/view?usp=sharing' },
+      { id: 'wr-8', type: 'file', name: 'Week 8: Weekly Progress Report', link: 'https://drive.google.com/file/d/15pzcejb0imETutDueTCZ3TgTVnoSyq1p/view?usp=sharing' },
+      { id: 'wr-9', type: 'file', name: 'Week 9: Weekly Progress Report', link: 'https://drive.google.com/file/d/1mlSbOaB8os0e17abg4FlBD4fF22-lV6v/view?usp=sharing' },
+      { id: 'wr-10', type: 'file', name: 'Week 10: Weekly Progress Report', link: 'https://drive.google.com/file/d/1d1_NEg767P_Yh2xKHBWzK4FspRpLjVDH/view?usp=sharing' },
+      { id: 'wr-11', type: 'file', name: 'Week 11: Weekly Progress Report', link: 'https://drive.google.com/file/d/1czMQWvhZS6qE11BduJLMCdrsf2To4d00/view?usp=sharing' },
+      { id: 'wr-12', type: 'file', name: 'Week 12: Weekly Progress Report', link: 'https://drive.google.com/file/d/1ayIx1SV2K6EF18TwB7UnIKV3OTik8zI5/view?usp=sharing' },
+      { id: 'wr-13', type: 'file', name: 'Week 13: Weekly Progress Report', link: 'https://drive.google.com/file/d/1wYIiRxqjYC_rBtfNXsp71XlX2tAc0lSm/view?usp=sharing' },
+      { id: 'wr-14', type: 'file', name: 'Week 14: Weekly Progress Report', link: 'https://drive.google.com/file/d/1R7ekvLZ39S_QzX18hacMiXYrngPl6L4H/view?usp=sharing' },
+    ]
+  },
+  'photo-docs': {
+    title: 'Weekly Photo Documentation',
+    files: [
+      { id: 'pd-1', type: 'file', name: 'Week 1: Photo Documentation', link: 'https://drive.google.com/file/d/1B-1SE9VKsg86ykcBj686AVaTuUDLb_ga/view?usp=sharing' },
+      { id: 'pd-2', type: 'file', name: 'Week 2: Photo Documentation', link: 'https://drive.google.com/file/d/1F2uOuwtJx5wDNTSxQOIeienmBSNYfpSl/view?usp=sharing' },
+      { id: 'pd-3', type: 'file', name: 'Week 3: Photo Documentation', link: 'https://drive.google.com/file/d/1q-7X18Yw-JEiYyPcwv2DyOTaPoi1fgm5/view?usp=sharing' },
+      { id: 'pd-4', type: 'file', name: 'Week 4: Photo Documentation', link: 'https://drive.google.com/file/d/1ZuR7zWYGGE1o4i8u9k2atCi9Mczvg7oD/view?usp=sharing' },
+      { id: 'pd-5', type: 'file', name: 'Week 5: Photo Documentation', link: 'https://drive.google.com/file/d/18cpNE1imjy0Zm7sUYnhbYNRhe-yFB1_x/view?usp=sharing' },
+      { id: 'pd-6', type: 'file', name: 'Week 6: Photo Documentation', link: 'https://drive.google.com/file/d/1Fa8LmFUbHiyZLHzsuVn8hSn3fs1W9tII/view?usp=sharing' },
+      { id: 'pd-7', type: 'file', name: 'Week 7: Photo Documentation', link: 'https://drive.google.com/file/d/1bEjPT3PdXOAeuPgYEjnF4cRQRXidN9qm/view?usp=sharing' },
+      { id: 'pd-8', type: 'file', name: 'Week 8: Photo Documentation', link: 'https://drive.google.com/file/d/1T0SqRS97au8lKVJYW6M9GOz5MthLM8q4/view?usp=sharing' },
+      { id: 'pd-9', type: 'file', name: 'Week 9: Photo Documentation', link: 'https://drive.google.com/file/d/1-8uDtZBqWSJTwBYoDzoCtbk0GpEFoHw8/view?usp=sharing' },
+      { id: 'pd-10', type: 'file', name: 'Week 10: Photo Documentation', link: 'https://drive.google.com/file/d/1L6bhozlLJNkpu39NQysrqPCwmurdHN4l/view?usp=sharing' },
+      { id: 'pd-11', type: 'file', name: 'Week 11: Photo Documentation', link: 'https://drive.google.com/file/d/1wCL4NRmYiHJbTln_aEbcpfPaaqc_RSpQ/view?usp=sharing' },
+      { id: 'pd-12', type: 'file', name: 'Week 12: Photo Documentation', link: 'https://drive.google.com/file/d/16Tez9Yh61ndbxALM2GlYNsdds4w6YFbs/view?usp=sharing' },
+      { id: 'pd-13', type: 'file', name: 'Week 13: Photo Documentation', link: 'https://drive.google.com/file/d/1dNJR03meU27nlMgW5hchvRsuLXkZY2i_/view?usp=sharing' },
+      { id: 'pd-14', type: 'file', name: 'Week 14: Photo Documentation', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    ]
+  }
+};
+
 const folderFiles = {
   before: [
-    { id: 'b1', name: 'Cover Page', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'b2', name: 'Approval Sheet', link: 'https://drive.google.com/file/d/1r914eFcCUg1QoTtWLwa6aKac09B7Awje/view?usp=sharing' },
-    { id: 'b3', name: 'Company Profile', link: 'https://drive.google.com/file/d/1p6LacSkaIplMI1xWtUrG9vMo_6xxLcNg/view?usp=sharing' },
-    { id: 'b4', name: 'Memorandum of Agreement', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'b5', name: 'Letter of Intent', link: 'https://drive.google.com/file/d/1qwoRBP3yfEGYJK3tR6srlUWCmwdCsUJQ/view?usp=sharing' },
-    { id: 'b6', name: 'Letter of Endorsement', link: 'https://drive.google.com/file/d/1wxS2glqkuNFUzP9WS8IgafcI3zg3ClcV/view?usp=sharing' },
-    { id: 'b7', name: 'Student Waiver', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'b8', name: 'Consent Form', link: 'https://drive.google.com/file/d/19q4SeCejNqVnnt0o7q7t5FNLjIkHk0xF/view?usp=sharing' },
-    { id: 'b9', name: 'Curriculum Vitae', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
-    { id: 'b10', name: 'Insurance', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
-    { id: 'b11', name: 'Medical Certificate', link: 'https://drive.google.com/file/d/1_9It8bxDPFw2LDyd44kN_xknsGtR5ToK/view?usp=sharing' },
+    { id: 'b1', type: 'file', name: 'Cover Page', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'b2', type: 'file', name: 'Approval Sheet', link: 'https://drive.google.com/file/d/1r914eFcCUg1QoTtWLwa6aKac09B7Awje/view?usp=sharing' },
+    { id: 'b3', type: 'file', name: 'Company Profile', link: 'https://drive.google.com/file/d/1p6LacSkaIplMI1xWtUrG9vMo_6xxLcNg/view?usp=sharing' },
+    { id: 'b4', type: 'file', name: 'Memorandum of Agreement', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'b5', type: 'file', name: 'Letter of Intent', link: 'https://drive.google.com/file/d/1qwoRBP3yfEGYJK3tR6srlUWCmwdCsUJQ/view?usp=sharing' },
+    { id: 'b6', type: 'file', name: 'Letter of Endorsement', link: 'https://drive.google.com/file/d/1wxS2glqkuNFUzP9WS8IgafcI3zg3ClcV/view?usp=sharing' },
+    { id: 'b7', type: 'file', name: 'Student Waiver', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'b8', type: 'file', name: 'Consent Form', link: 'https://drive.google.com/file/d/19q4SeCejNqVnnt0o7q7t5FNLjIkHk0xF/view?usp=sharing' },
+    { id: 'b9', type: 'file', name: 'Curriculum Vitae', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
+    { id: 'b10', type: 'file', name: 'Insurance', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
+    { id: 'b11', type: 'file', name: 'Medical Certificate', link: 'https://drive.google.com/file/d/1_9It8bxDPFw2LDyd44kN_xknsGtR5ToK/view?usp=sharing' },
   ],
   during: [
-    { id: 'd1', name: 'Daily Time Record', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'd2', name: 'Week 1: Weekly Progress Report', link: 'https://drive.google.com/file/d/1rXqVF2sa5X32rDSwAdmqGx92tzwgmRSo/view?usp=sharing' },
-    { id: 'd3', name: 'Week 2: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
-    { id: 'd4', name: 'Week 3: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
-    { id: 'd5', name: 'Week 4: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
-    { id: 'd6', name: 'Week 5: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
-    { id: 'd7', name: 'Week 6: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
-    { id: 'd8', name: 'Week 7: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
-
+    { id: 'd-dtr', type: 'file', name: 'Daily Time Record', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    {
+      id: 'd-weekly-reports',
+      type: 'folder',
+      name: 'Weekly Reports',
+      subfolderKey: 'weekly-reports'
+    },
+    {
+      id: 'd-photo-docs',
+      type: 'folder',
+      name: 'Weekly Photo Documentation',
+      subfolderKey: 'photo-docs'
+    },
   ],
   after: [
-    { id: 'a1', name: 'Training Supervisor Form', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a2', name: 'HTE Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a3', name: 'OJT Adviser Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a4', name: 'Trainee Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a5', name: 'Performance Evaluation', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a6', name: 'Certificate of Completion', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a1', type: 'file', name: 'Training Supervisor Form', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a2', type: 'file', name: 'HTE Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a3', type: 'file', name: 'OJT Adviser Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a4', type: 'file', name: 'Trainee Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a5', type: 'file', name: 'Performance Evaluation', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a6', type: 'file', name: 'Certificate of Completion', link: 'PASTE_GDRAIVE_LINK_HERE' },
   ]
 };
 
@@ -73,7 +118,12 @@ const explorerLayout = {
 };
 
 // "Week 3: Weekly Progress Report" -> "Week 3" (full name stays in the tooltip)
-const getDisplayName = (name) => name.replace(/^(Week \d+):.*$/, '$1');
+const getDisplayName = (name) => {
+  if (/^Week \d+:/.test(name)) {
+    return name.replace(/^(Week \d+):.*$/, '$1');
+  }
+  return name;
+};
 
 const PLACEHOLDER_LINK = 'PASTE_GDRAIVE_LINK_HERE';
 
@@ -145,54 +195,6 @@ const pageStyles = `
   }
 }
 
-.ojt-back {
-  position: absolute;
-  top: 24px;
-  left: 32px;
-  z-index: 300;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 44px;
-  padding: 0 18px 0 14px;
-  background: #fffdf8;
-  color: #2a1815;
-  border: 1.5px solid #2a1815;
-  border-radius: 999px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 3px 3px 0 #2a1815;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-}
-
-.ojt-back:hover {
-  background: #fff3d6;
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 #2a1815;
-}
-
-.ojt-back:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 #2a1815;
-}
-
-.ojt-back:focus-visible {
-  outline: 3px solid #f0b942;
-  outline-offset: 3px;
-}
-
-.ojt-back-arrow {
-  display: inline-block;
-  font-size: 18px;
-  line-height: 1;
-  transition: transform 0.2s ease;
-}
-
-.ojt-back:hover .ojt-back-arrow {
-  transform: translateX(-4px);
-}
-
 .ojt-file:focus-visible {
   outline: 2px solid #2a1815;
   outline-offset: 1px;
@@ -202,49 +204,113 @@ const pageStyles = `
   background-color: rgba(42, 24, 21, 0.06);
 }
 
-.ojt-grid {
+.ojt-file.is-folder:hover {
+  background-color: rgba(230, 168, 56, 0.15);
+}
+
+.ojt-grid-wrapper {
   top: var(--grid-top);
   left: var(--grid-left);
   right: var(--grid-right);
   bottom: var(--grid-bottom);
 }
 
+.ojt-breadcrumb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: #fffdf8;
+  border: 1px solid #2a1815;
+  box-shadow: 1.5px 1.5px 0 #2a1815;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2a1815;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+}
+
+.ojt-breadcrumb-btn:hover {
+  background: #fff3d6;
+  transform: translate(0.5px, 0.5px);
+  box-shadow: 1px 1px 0 #2a1815;
+}
+
+.ojt-breadcrumb-btn:active {
+  transform: translate(1.5px, 1.5px);
+  box-shadow: none;
+}
+
 /* Narrow screens: give the icons more room by pulling the grid left */
 @media (max-width: 640px) {
+  .ojt-grid-wrapper {
+    left: max(2%, calc(var(--grid-left) - 10%)) !important;
+    right: 2% !important;
+  }
   .ojt-grid {
-    left: max(2%, calc(var(--grid-left) - 10%));
-    right: 2%;
     grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)) !important;
     gap: 6px !important;
   }
-  .ojt-back { padding: 0 14px; }
-  .ojt-back-label { display: none; }
-  .ojt-title { font-size: 18px !important; }
 }
 
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .ojt-folder-img,
-  .ojt-title {
+  .ojt-folder-img {
     animation: none !important;
-  }
-  .ojt-back-arrow {
-    transition: none !important;
   }
   .ojt-folder,
   .ojt-popup,
   .ojt-backdrop,
   .ojt-badge,
-  .ojt-back,
   .ojt-file {
     transition: none !important;
   }
 }
 `;
 
-export default function FilesPage({ onBack }) {
+function FolderIcon({ style, className }) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: 'block', ...style }}
+      className={className}
+      aria-hidden="true"
+    >
+      {/* Folder Back Tab */}
+      <path
+        d="M7 17C7 14.7909 8.79086 13 11 13H24.5C25.9 13 27.2 13.7 28 14.9L30.2 18H53C55.2091 18 57 19.7909 57 22V47C57 49.2091 55.2091 51 53 51H11C8.79086 51 7 49.2091 7 47V17Z"
+        fill="#e5a83b"
+      />
+      {/* Folder Paper sheet peek */}
+      <path
+        d="M12 18C12 16.8954 12.8954 16 14 16H48C49.1046 16 50 16.8954 50 18V26H12V18Z"
+        fill="#ffffff"
+        fillOpacity="0.8"
+      />
+      {/* Folder Front Pocket Body */}
+      <path
+        d="M7 23C7 20.7909 8.79086 19 11 19H53C55.2091 19 57 20.7909 57 23V47C57 49.2091 55.2091 51 53 51H11C8.79086 51 7 49.2091 7 47V23Z"
+        fill="#f5c253"
+      />
+      {/* Top subtle highlight */}
+      <path
+        d="M7 23.5C7 21.567 8.567 20 10.5 20H53.5C55.433 20 57 21.567 57 23.5V25H7V23.5Z"
+        fill="#ffffff"
+        fillOpacity="0.3"
+      />
+      {/* Folder subtle bottom crease */}
+      <rect x="7" y="48" width="50" height="2" rx="1" fill="#d99b2c" fillOpacity="0.4" />
+    </svg>
+  );
+}
+
+export default function FilesPage({ onNavigate }) {
   const [hoveredFolder, setHoveredFolder] = useState(null);
   const [activeFolder, setActiveFolder] = useState(null);
+  const [currentSubfolder, setCurrentSubfolder] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const popupRef = useRef(null);
@@ -252,11 +318,14 @@ export default function FilesPage({ onBack }) {
 
   const openFolder = (folderKey) => {
     lastFocusedRef.current = document.activeElement;
+    setCurrentSubfolder(null);
+    setSelectedFile(null);
     setActiveFolder(folderKey);
   };
 
   const closeFolder = () => {
     setActiveFolder(null);
+    setCurrentSubfolder(null);
     setSelectedFile(null);
     // Return focus to whatever opened the window
     if (lastFocusedRef.current && typeof lastFocusedRef.current.focus === 'function') {
@@ -264,15 +333,22 @@ export default function FilesPage({ onBack }) {
     }
   };
 
-  // Escape closes the popup
+  // Escape closes subfolder first, or the popup
   useEffect(() => {
     if (!activeFolder) return undefined;
     const handleKey = (e) => {
-      if (e.key === 'Escape') closeFolder();
+      if (e.key === 'Escape') {
+        if (currentSubfolder) {
+          setCurrentSubfolder(null);
+          setSelectedFile(null);
+        } else {
+          closeFolder();
+        }
+      }
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
-  }, [activeFolder]);
+  }, [activeFolder, currentSubfolder]);
 
   // Move focus into the popup when it opens
   useEffect(() => {
@@ -317,22 +393,41 @@ export default function FilesPage({ onBack }) {
     window.open(file.link, '_blank', 'noopener,noreferrer');
   };
 
-  // Desktop: single click selects, double click opens (like a real file explorer).
-  // Touch devices: a single tap opens, since there is no double-click.
-  const handleFileClick = (file) => {
-    setSelectedFile(file);
-    const isTouch =
-      typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(pointer: coarse)').matches;
-    if (isTouch) openFile(file);
+  // Folders open on single click as requested.
+  // Files: single click selects, double click opens. On touch, single tap opens.
+  const handleItemClick = (item) => {
+    setSelectedFile(item);
+    if (item.type === 'folder') {
+      setCurrentSubfolder(item.subfolderKey);
+      setSelectedFile(null);
+    } else {
+      const isTouch =
+        typeof window !== 'undefined' &&
+        window.matchMedia &&
+        window.matchMedia('(pointer: coarse)').matches;
+      if (isTouch) openFile(item);
+    }
   };
 
-  const handleFileKeyDown = (e, file) => {
+  const handleItemDoubleClick = (item) => {
+    if (item.type === 'folder') {
+      setCurrentSubfolder(item.subfolderKey);
+      setSelectedFile(null);
+    } else {
+      openFile(item);
+    }
+  };
+
+  const handleItemKeyDown = (e, item) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setSelectedFile(file);
-      openFile(file);
+      if (item.type === 'folder') {
+        setCurrentSubfolder(item.subfolderKey);
+        setSelectedFile(null);
+      } else {
+        setSelectedFile(item);
+        openFile(item);
+      }
     }
   };
 
@@ -341,6 +436,11 @@ export default function FilesPage({ onBack }) {
       e.preventDefault();
       openFolder(folderKey);
     }
+  };
+
+  const getBadgeText = (folderKey) => {
+    if (folderKey === 'during') return '3 items';
+    return `${folderFiles[folderKey]?.length || 0} files`;
   };
 
   const folderHandlers = (folderKey) => ({
@@ -352,17 +452,25 @@ export default function FilesPage({ onBack }) {
     onKeyDown: (e) => handleFolderKeyDown(e, folderKey),
     role: 'button',
     tabIndex: 0,
-    'aria-label': `Open ${folderTitles[folderKey]} folder, ${folderFiles[folderKey].length} files`,
+    'aria-label': `Open ${folderTitles[folderKey]} folder, ${getBadgeText(folderKey)}`,
     'aria-haspopup': 'dialog',
   });
 
   const renderBadge = (folderKey) => (
     <span className="ojt-badge" style={badgePositions[folderKey]} aria-hidden="true">
-      {folderFiles[folderKey].length} files
+      {getBadgeText(folderKey)}
     </span>
   );
 
   const layout = explorerLayout[activeFolder] || explorerLayout.before;
+
+  const getActiveItems = () => {
+    if (!activeFolder) return [];
+    if (activeFolder === 'during' && currentSubfolder) {
+      return duringSubfolders[currentSubfolder]?.files || [];
+    }
+    return folderFiles[activeFolder] || [];
+  };
 
   return (
     <div
@@ -378,66 +486,20 @@ export default function FilesPage({ onBack }) {
         backgroundColor: '#f7f4ee',
         // Keep the folder stack clear of the title + hint at the top
         boxSizing: 'border-box',
-        paddingTop: '90px'
+        padding: 0
       }}
     >
       <style>{pageStyles}</style>
 
-      {/* Back Button */}
-      <button
-        type="button"
-        className="ojt-back"
-        onClick={onBack}
-        title="Back to Desktop"
-        aria-label="Back to Desktop"
-      >
-        <span className="ojt-back-arrow" aria-hidden="true">←</span>
-        <span className="ojt-back-label">Desktop</span>
-      </button>
-
-      {/* Page title + hint */}
-      <div
-        className="ojt-title"
-        style={{
-          position: 'absolute',
-          top: '24px',
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          pointerEvents: 'none',
-          zIndex: 5
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: '26px',
-            fontWeight: 700,
-            letterSpacing: '0.3px',
-            color: '#2a1815'
-          }}
-        >
-          My OJT Documents
-        </h1>
-        <p
-          style={{
-            margin: '6px 0 0',
-            fontSize: '14px',
-            fontWeight: 500,
-            color: 'rgba(42, 24, 21, 0.6)'
-          }}
-        >
-          Pick a folder to browse what's inside
-        </p>
-      </div>
+      {/* Navigation */}
+      <PortfolioNav active="files" onNavigate={onNavigate} />
 
       {/* Scalable Container for Folders Only */}
       <div
         style={{
           // The three stacked folders are about 0.65x as tall as they are wide, so
-          // cap the width by the space left under the title. The whole stack then
-          // always fits on screen instead of running off the bottom.
-          width: 'min(90vw, 1000px, calc((100vh - 120px) * 1.53))',
+          // cap the width by the available height with room for navbar.
+          width: 'min(90vw, 1000px, calc((100vh - 90px) * 1.53))',
           position: 'relative',
           margin: '0 auto',
           display: 'flex',
@@ -595,78 +657,144 @@ export default function FilesPage({ onBack }) {
           {/* ================= RESPONSIVE FILE ICONS GRID OVERLAY ================= */}
           {activeFolder && (
             <div
-              className="ojt-grid"
-              role="group"
-              aria-label={`${folderTitles[activeFolder]} documents`}
+              className="ojt-grid-wrapper"
               style={{
                 '--grid-top': layout.top,
                 '--grid-left': layout.left,
                 '--grid-right': layout.right,
                 '--grid-bottom': layout.bottom,
                 position: 'absolute',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(84px, 1fr))',
-                gap: '10px',
-                padding: '8px',
-                alignContent: 'start',
-                overflowY: 'auto',
-                WebkitOverflowScrolling: 'touch'
+                top: layout.top,
+                left: layout.left,
+                right: layout.right,
+                bottom: layout.bottom,
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden'
               }}
             >
-              {folderFiles[activeFolder]?.map((file) => {
-                const isSelected = selectedFile?.id === file.id;
-                return (
-                  <div
-                    key={file.id}
-                    className="ojt-file"
-                    role="button"
-                    tabIndex={0}
-                    title={`${file.name} — double-click to open`}
-                    aria-label={`${file.name}. Press Enter to open.`}
-                    onClick={() => handleFileClick(file)}
-                    onDoubleClick={() => openFile(file)}
-                    onKeyDown={(e) => handleFileKeyDown(e, file)}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start',
-                      width: '100%',
-                      padding: '8px 4px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      userSelect: 'none',
-                      backgroundColor: isSelected ? 'rgba(42, 24, 21, 0.12)' : undefined,
-                      border: isSelected ? '1px solid rgba(42, 24, 21, 0.2)' : '1px solid transparent',
-                      transition: 'all 0.2s ease'
+              {/* Breadcrumb Navigation when inside a subfolder */}
+              {activeFolder === 'during' && currentSubfolder && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '2px 6px 8px 6px',
+                    borderBottom: '1px solid rgba(42, 24, 21, 0.1)',
+                    marginBottom: '6px',
+                    flexShrink: 0
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentSubfolder(null);
+                      setSelectedFile(null);
                     }}
+                    className="ojt-breadcrumb-btn"
+                    title="Back to During OJT root"
                   >
-                    <img
-                      src={fileIcon}
-                      alt=""
-                      draggable={false}
-                      style={{ width: '40px', height: '40px', objectFit: 'contain', marginBottom: '6px' }}
-                    />
-                    <span
+                    <span aria-hidden="true">←</span> Back
+                  </button>
+                  <span style={{ fontSize: '11px', color: 'rgba(42, 24, 21, 0.45)', fontWeight: 500 }}>
+                    During OJT &nbsp;/
+                  </span>
+                  <span style={{ fontSize: '12px', color: '#2a1815', fontWeight: 700 }}>
+                    {duringSubfolders[currentSubfolder]?.title}
+                  </span>
+                </div>
+              )}
+
+              {/* Items Grid */}
+              <div
+                className="ojt-grid"
+                role="group"
+                aria-label={
+                  currentSubfolder
+                    ? `${duringSubfolders[currentSubfolder]?.title} documents`
+                    : `${folderTitles[activeFolder]} documents`
+                }
+                style={{
+                  flex: 1,
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(84px, 1fr))',
+                  gap: '10px',
+                  padding: '6px',
+                  alignContent: 'start',
+                  overflowY: 'auto',
+                  WebkitOverflowScrolling: 'touch'
+                }}
+              >
+                {getActiveItems().map((item) => {
+                  const isSelected = selectedFile?.id === item.id;
+                  const isFolder = item.type === 'folder';
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`ojt-file ${isFolder ? 'is-folder' : ''}`}
+                      role="button"
+                      tabIndex={0}
+                      title={
+                        isFolder
+                          ? `${item.name} (Folder) — click to open`
+                          : `${item.name} — double-click to open`
+                      }
+                      aria-label={
+                        isFolder
+                          ? `${item.name} folder. Press Enter to open.`
+                          : `${item.name}. Press Enter to open.`
+                      }
+                      onClick={() => handleItemClick(item)}
+                      onDoubleClick={() => handleItemDoubleClick(item)}
+                      onKeyDown={(e) => handleItemKeyDown(e, item)}
                       style={{
-                        fontSize: '12px',
-                        color: '#2a1815',
-                        textAlign: 'center',
-                        fontWeight: 500,
-                        lineHeight: '1.25',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
                         width: '100%',
-                        wordBreak: 'break-word'
+                        padding: '8px 4px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        userSelect: 'none',
+                        backgroundColor: isSelected ? 'rgba(42, 24, 21, 0.12)' : undefined,
+                        border: isSelected ? '1px solid rgba(42, 24, 21, 0.2)' : '1px solid transparent',
+                        transition: 'all 0.2s ease'
                       }}
                     >
-                      {getDisplayName(file.name)}
-                    </span>
-                  </div>
-                );
-              })}
+                      {isFolder ? (
+                        <FolderIcon style={{ width: '42px', height: '40px', marginBottom: '6px' }} />
+                      ) : (
+                        <img
+                          src={fileIcon}
+                          alt=""
+                          draggable={false}
+                          style={{ width: '40px', height: '40px', objectFit: 'contain', marginBottom: '6px' }}
+                        />
+                      )}
+                      <span
+                        style={{
+                          fontSize: '11px',
+                          color: '#2a1815',
+                          textAlign: 'center',
+                          fontWeight: 500,
+                          lineHeight: '1.25',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          width: '100%',
+                          wordBreak: 'break-word'
+                        }}
+                      >
+                        {getDisplayName(item.name)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>

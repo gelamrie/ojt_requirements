@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
 import HeroFolder from './HeroFolder';
-import FilesPage from './FilesPage'; // <-- Fixed default import
+import FilesPage from './FilesPage';
 import PhotoLightbox from './PhotoLightbox';
 import AboutPage from './AboutPage';
+import ContactMe from './ContactMe';
+import PortfolioNav from './PortfolioNav';
 
 import finderIcon from './assets/finder.png';
 import settingsIcon from './assets/settings.png';
@@ -27,8 +29,22 @@ const photos = [
 ];
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('desktop');
+  const [history, setHistory] = useState(['desktop']);
   const [openPhoto, setOpenPhoto] = useState(null); // index into `photos`, or null
+
+  const currentPage = history[history.length - 1] || 'desktop';
+
+  const navigateTo = (target) => {
+    if (target === 'back') {
+      setHistory((prev) => (prev.length > 1 ? prev.slice(0, -1) : ['desktop']));
+      return;
+    }
+    const resolved = target === 'home' ? 'desktop' : target;
+    setHistory((prev) => {
+      if (prev[prev.length - 1] === resolved) return prev;
+      return [...prev, resolved];
+    });
+  };
 
   // Props that make a photo card behave like a button (mouse, touch and keyboard)
   const photoProps = (id) => {
@@ -52,29 +68,35 @@ export default function App() {
     role: 'button',
     tabIndex: 0,
     'aria-label': `Open ${label}`,
-    onClick: () => setCurrentPage(page),
+    onClick: () => navigateTo(page),
     onKeyDown: (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        setCurrentPage(page);
+        navigateTo(page);
       }
     },
   });
 
   // Renders ONLY the Files component
   if (currentPage === 'files') {
-    return <FilesPage onBack={() => setCurrentPage('desktop')} />; // <-- Updated component name
+    return <FilesPage onNavigate={navigateTo} />;
   }
 
   // Renders ONLY the About Me page
   if (currentPage === 'about') {
-    return <AboutPage onBack={() => setCurrentPage('desktop')} />;
+    return <AboutPage onNavigate={navigateTo} />;
+  }
+
+  // Renders ONLY the Contact page
+  if (currentPage === 'contact') {
+    return <ContactMe onNavigate={navigateTo} />;
   }
 
   // Renders ONLY Desktop Landing Page
   return (
     <div className="page-wrapper">
       <main className="canvas-board">
+        <PortfolioNav active="home" onNavigate={navigateTo} />
         {/* Top Left Elements */}
         <div
           className="desktop-item item-files"
@@ -136,13 +158,18 @@ export default function App() {
           </div>
         </div>
 
-        <div className="desktop-item item-contact">
+        {/* Contact Me folder opens the contact artwork. */}
+        <div
+          className="desktop-item item-contact"
+          {...pageProps('contact', 'contact me')}
+          style={{ cursor: 'pointer' }}
+        >
           <div className="folder-icon small">
             <div className="folder-tab" />
             <div className="folder-paper" />
             <div className="folder-body" />
           </div>
-          <span>contact info</span>
+          <span>contact me</span>
         </div>
       </main>
 
