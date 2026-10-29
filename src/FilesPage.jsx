@@ -20,7 +20,7 @@ const duringSubfolders = {
       { id: 'wr-1', type: 'file', name: 'Week 1: Weekly Progress Report', link: 'https://drive.google.com/file/d/1tZYa3mLoZUSKNSjU5qRL7qzKCpzWZuQV/view?usp=sharing' },
       { id: 'wr-2', type: 'file', name: 'Week 2: Weekly Progress Report', link: 'https://drive.google.com/file/d/1pb556r0U31hRGAHanGNtsNJHgcyEj7yb/view?usp=sharing' },
       { id: 'wr-3', type: 'file', name: 'Week 3: Weekly Progress Report', link: 'https://drive.google.com/file/d/1m-UA-A6ZGI8JPNtPAHFnwixcDgYnOuf1/view?usp=sharing' },
-      { id: 'wr-4', type: 'file', name: 'Week 4: Weekly Progress Report', link: 'https://drive.google.com/file/d/1zQZRqirdjh8eSmeolGe45zEOVY_maV3N/view?usp=sharing' },
+      { id: 'wr-4', type: 'file', name: 'Week 4: Weekly Progress Report', link: 'https://drive.google.com/file/d/1FMWhryLxy63jUeHgOpPHKJ45HOZ1bfaF/view?usp=sharing' },
       { id: 'wr-5', type: 'file', name: 'Week 5: Weekly Progress Report', link: 'https://drive.google.com/file/d/1-_jl6SAjiCKYRw-fnRsdVpmI_rgWiu8h/view?usp=sharing' },
       { id: 'wr-6', type: 'file', name: 'Week 6: Weekly Progress Report', link: 'https://drive.google.com/file/d/1XNstsdjFJrTdI2SwSR97AS4tnD0EHePL/view?usp=sharing' },
       { id: 'wr-7', type: 'file', name: 'Week 7: Weekly Progress Report', link: 'https://drive.google.com/file/d/1DD_PbPP61OWFW9PJkD6w51dPHzm3a0Lg/view?usp=sharing' },
@@ -65,8 +65,7 @@ const folderFiles = {
     { id: 'b7', type: 'file', name: 'Student Waiver', link: 'PASTE_GDRAIVE_LINK_HERE' },
     { id: 'b8', type: 'file', name: 'Consent Form', link: 'https://drive.google.com/file/d/19q4SeCejNqVnnt0o7q7t5FNLjIkHk0xF/view?usp=sharing' },
     { id: 'b9', type: 'file', name: 'Curriculum Vitae', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
-    // NOTE: this is the same link as the Curriculum Vitae above. Replace it with the Insurance file's own link.
-    { id: 'b10', type: 'file', name: 'Insurance', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
+    { id: 'b10', type: 'file', name: 'Insurance', link: 'https://drive.google.com/file/d/1pxa4PV9U4m8PuFeDwFfi_OEIReih_cvG/view?usp=sharing' },
     { id: 'b11', type: 'file', name: 'Medical Certificate', link: 'https://drive.google.com/file/d/1_9It8bxDPFw2LDyd44kN_xknsGtR5ToK/view?usp=sharing' },
   ],
   during: [
