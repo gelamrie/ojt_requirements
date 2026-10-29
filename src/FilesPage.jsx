@@ -65,6 +65,7 @@ const folderFiles = {
     { id: 'b7', type: 'file', name: 'Student Waiver', link: 'PASTE_GDRAIVE_LINK_HERE' },
     { id: 'b8', type: 'file', name: 'Consent Form', link: 'https://drive.google.com/file/d/19q4SeCejNqVnnt0o7q7t5FNLjIkHk0xF/view?usp=sharing' },
     { id: 'b9', type: 'file', name: 'Curriculum Vitae', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
+    // NOTE: this is the same link as the Curriculum Vitae above. Replace it with the Insurance file's own link.
     { id: 'b10', type: 'file', name: 'Insurance', link: 'https://drive.google.com/file/d/1jCh-ChImizoJvjC7ol1Pqre9rstVnIY5/view?usp=sharing' },
     { id: 'b11', type: 'file', name: 'Medical Certificate', link: 'https://drive.google.com/file/d/1_9It8bxDPFw2LDyd44kN_xknsGtR5ToK/view?usp=sharing' },
   ],
@@ -126,6 +127,7 @@ const getDisplayName = (name) => {
 };
 
 const PLACEHOLDER_LINK = 'PASTE_GDRAIVE_LINK_HERE';
+const UNAVAILABLE_MESSAGE = 'This file is not available yet.';
 
 const pageStyles = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
@@ -142,6 +144,11 @@ const pageStyles = `
 @keyframes ojtFade {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ojtToastIn {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
 }
 
 .ojt-folder-img {
@@ -195,6 +202,12 @@ const pageStyles = `
   }
 }
 
+.ojt-file {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .ojt-file:focus-visible {
   outline: 2px solid #2a1815;
   outline-offset: 1px;
@@ -206,6 +219,10 @@ const pageStyles = `
 
 .ojt-file.is-folder:hover {
   background-color: rgba(230, 168, 56, 0.15);
+}
+
+.ojt-file.is-unavailable {
+  opacity: 0.65;
 }
 
 .ojt-grid-wrapper {
@@ -242,6 +259,23 @@ const pageStyles = `
   box-shadow: none;
 }
 
+.ojt-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #2a1815;
+  color: #fffdf8;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 1020;
+  pointer-events: none;
+  animation: ojtToastIn 0.25s ease both;
+}
+
 /* Narrow screens: give the icons more room by pulling the grid left */
 @media (max-width: 640px) {
   .ojt-grid-wrapper {
@@ -256,7 +290,8 @@ const pageStyles = `
 
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .ojt-folder-img {
+  .ojt-folder-img,
+  .ojt-toast {
     animation: none !important;
   }
   .ojt-folder,
@@ -312,6 +347,7 @@ export default function FilesPage({ onNavigate }) {
   const [activeFolder, setActiveFolder] = useState(null);
   const [currentSubfolder, setCurrentSubfolder] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [notice, setNotice] = useState(null);
 
   const popupRef = useRef(null);
   const lastFocusedRef = useRef(null);
@@ -320,6 +356,7 @@ export default function FilesPage({ onNavigate }) {
     lastFocusedRef.current = document.activeElement;
     setCurrentSubfolder(null);
     setSelectedFile(null);
+    setNotice(null);
     setActiveFolder(folderKey);
   };
 
@@ -327,10 +364,17 @@ export default function FilesPage({ onNavigate }) {
     setActiveFolder(null);
     setCurrentSubfolder(null);
     setSelectedFile(null);
+    setNotice(null);
     // Return focus to whatever opened the window
     if (lastFocusedRef.current && typeof lastFocusedRef.current.focus === 'function') {
       lastFocusedRef.current.focus();
     }
+  };
+
+  const openSubfolder = (item) => {
+    setCurrentSubfolder(item.subfolderKey);
+    setSelectedFile(null);
+    setNotice(null);
   };
 
   // Escape closes subfolder first, or the popup
@@ -356,6 +400,13 @@ export default function FilesPage({ onNavigate }) {
       popupRef.current.focus();
     }
   }, [activeFolder]);
+
+  // Auto-hide the "not available" message
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timer = setTimeout(() => setNotice(null), 2500);
+    return () => clearTimeout(timer);
+  }, [notice]);
 
   const getZIndex = (folderKey, baseZIndex) => {
     if (activeFolder === folderKey) return 50;
@@ -385,48 +436,16 @@ export default function FilesPage({ onNavigate }) {
     }
   };
 
-  const openFile = (file) => {
-    if (file.link === PLACEHOLDER_LINK) {
-      alert('Google Drive link has not been added for this file yet.');
-      return;
-    }
-    window.open(file.link, '_blank', 'noopener,noreferrer');
-  };
-
-  // Folders open on single click as requested.
-  // Files: single click selects, double click opens. On touch, single tap opens.
-  const handleItemClick = (item) => {
-    setSelectedFile(item);
-    if (item.type === 'folder') {
-      setCurrentSubfolder(item.subfolderKey);
-      setSelectedFile(null);
-    } else {
-      const isTouch =
-        typeof window !== 'undefined' &&
-        window.matchMedia &&
-        window.matchMedia('(pointer: coarse)').matches;
-      if (isTouch) openFile(item);
-    }
-  };
-
-  const handleItemDoubleClick = (item) => {
-    if (item.type === 'folder') {
-      setCurrentSubfolder(item.subfolderKey);
-      setSelectedFile(null);
-    } else {
-      openFile(item);
-    }
-  };
-
+  // Keyboard handling for folders and files without a link yet.
+  // Real files are <a> links, so Enter already works on them natively.
   const handleItemKeyDown = (e, item) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (item.type === 'folder') {
-        setCurrentSubfolder(item.subfolderKey);
-        setSelectedFile(null);
+        openSubfolder(item);
       } else {
         setSelectedFile(item);
-        openFile(item);
+        setNotice(UNAVAILABLE_MESSAGE);
       }
     }
   };
@@ -470,6 +489,119 @@ export default function FilesPage({ onNavigate }) {
       return duringSubfolders[currentSubfolder]?.files || [];
     }
     return folderFiles[activeFolder] || [];
+  };
+
+  const renderItem = (item) => {
+    const isSelected = selectedFile?.id === item.id;
+    const isFolder = item.type === 'folder';
+    const hasLink = !isFolder && item.link && item.link !== PLACEHOLDER_LINK;
+
+    const itemStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      width: '100%',
+      boxSizing: 'border-box',
+      padding: '8px 4px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      userSelect: 'none',
+      textDecoration: 'none',
+      backgroundColor: isSelected ? 'rgba(42, 24, 21, 0.12)' : undefined,
+      border: isSelected ? '1px solid rgba(42, 24, 21, 0.2)' : '1px solid transparent',
+      transition: 'all 0.2s ease'
+    };
+
+    const content = (
+      <>
+        {isFolder ? (
+          <FolderIcon style={{ width: '42px', height: '40px', marginBottom: '6px' }} />
+        ) : (
+          <img
+            src={fileIcon}
+            alt=""
+            draggable={false}
+            style={{ width: '40px', height: '40px', objectFit: 'contain', marginBottom: '6px' }}
+          />
+        )}
+        <span
+          style={{
+            fontSize: '11px',
+            color: '#2a1815',
+            textAlign: 'center',
+            fontWeight: 500,
+            lineHeight: '1.25',
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            width: '100%',
+            wordBreak: 'break-word'
+          }}
+        >
+          {getDisplayName(item.name)}
+        </span>
+      </>
+    );
+
+    // Folders: open on single click
+    if (isFolder) {
+      return (
+        <div
+          key={item.id}
+          className="ojt-file is-folder"
+          role="button"
+          tabIndex={0}
+          title={`${item.name} (Folder), click to open`}
+          aria-label={`${item.name} folder. Press Enter to open.`}
+          onClick={() => openSubfolder(item)}
+          onKeyDown={(e) => handleItemKeyDown(e, item)}
+          style={itemStyle}
+        >
+          {content}
+        </div>
+      );
+    }
+
+    // Files with a real Drive link: a plain anchor works on every host,
+    // in iframes, and on mobile, with no popup-blocker issues.
+    if (hasLink) {
+      return (
+        <a
+          key={item.id}
+          className="ojt-file"
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`${item.name}, click to open`}
+          onClick={() => setSelectedFile(item)}
+          style={itemStyle}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    // Files still waiting for a link: show an on-page message instead of alert()
+    return (
+      <div
+        key={item.id}
+        className="ojt-file is-unavailable"
+        role="button"
+        tabIndex={0}
+        title={`${item.name}, not available yet`}
+        aria-label={`${item.name}. Not available yet.`}
+        onClick={() => {
+          setSelectedFile(item);
+          setNotice(UNAVAILABLE_MESSAGE);
+        }}
+        onKeyDown={(e) => handleItemKeyDown(e, item)}
+        style={itemStyle}
+      >
+        {content}
+      </div>
+    );
   };
 
   return (
@@ -654,6 +786,13 @@ export default function FilesPage({ onNavigate }) {
             style={{ width: '100%', height: 'auto', display: 'block' }}
           />
 
+          {/* "Not available yet" message */}
+          {notice && (
+            <div className="ojt-toast" role="status" aria-live="polite">
+              {notice}
+            </div>
+          )}
+
           {/* ================= RESPONSIVE FILE ICONS GRID OVERLAY ================= */}
           {activeFolder && (
             <div
@@ -726,74 +865,7 @@ export default function FilesPage({ onNavigate }) {
                   WebkitOverflowScrolling: 'touch'
                 }}
               >
-                {getActiveItems().map((item) => {
-                  const isSelected = selectedFile?.id === item.id;
-                  const isFolder = item.type === 'folder';
-
-                  return (
-                    <div
-                      key={item.id}
-                      className={`ojt-file ${isFolder ? 'is-folder' : ''}`}
-                      role="button"
-                      tabIndex={0}
-                      title={
-                        isFolder
-                          ? `${item.name} (Folder) — click to open`
-                          : `${item.name} — double-click to open`
-                      }
-                      aria-label={
-                        isFolder
-                          ? `${item.name} folder. Press Enter to open.`
-                          : `${item.name}. Press Enter to open.`
-                      }
-                      onClick={() => handleItemClick(item)}
-                      onDoubleClick={() => handleItemDoubleClick(item)}
-                      onKeyDown={(e) => handleItemKeyDown(e, item)}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        width: '100%',
-                        padding: '8px 4px',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        userSelect: 'none',
-                        backgroundColor: isSelected ? 'rgba(42, 24, 21, 0.12)' : undefined,
-                        border: isSelected ? '1px solid rgba(42, 24, 21, 0.2)' : '1px solid transparent',
-                        transition: 'all 0.2s ease'
-                      }}
-                    >
-                      {isFolder ? (
-                        <FolderIcon style={{ width: '42px', height: '40px', marginBottom: '6px' }} />
-                      ) : (
-                        <img
-                          src={fileIcon}
-                          alt=""
-                          draggable={false}
-                          style={{ width: '40px', height: '40px', objectFit: 'contain', marginBottom: '6px' }}
-                        />
-                      )}
-                      <span
-                        style={{
-                          fontSize: '11px',
-                          color: '#2a1815',
-                          textAlign: 'center',
-                          fontWeight: 500,
-                          lineHeight: '1.25',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          width: '100%',
-                          wordBreak: 'break-word'
-                        }}
-                      >
-                        {getDisplayName(item.name)}
-                      </span>
-                    </div>
-                  );
-                })}
+                {getActiveItems().map(renderItem)}
               </div>
             </div>
           )}
