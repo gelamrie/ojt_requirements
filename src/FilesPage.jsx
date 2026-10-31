@@ -56,7 +56,6 @@ const duringSubfolders = {
 
 const folderFiles = {
   before: [
-    { id: 'b1', type: 'file', name: 'Cover Page', link: 'PASTE_GDRAIVE_LINK_HERE' },
     { id: 'b2', type: 'file', name: 'Approval Sheet', link: 'https://drive.google.com/file/d/1r914eFcCUg1QoTtWLwa6aKac09B7Awje/view?usp=sharing' },
     { id: 'b3', type: 'file', name: 'Company Profile', link: 'https://drive.google.com/file/d/1p6LacSkaIplMI1xWtUrG9vMo_6xxLcNg/view?usp=sharing' },
     { id: 'b4', type: 'file', name: 'Memorandum of Agreement', link: 'PASTE_GDRAIVE_LINK_HERE' },
@@ -69,7 +68,7 @@ const folderFiles = {
     { id: 'b11', type: 'file', name: 'Medical Certificate', link: 'https://drive.google.com/file/d/1_9It8bxDPFw2LDyd44kN_xknsGtR5ToK/view?usp=sharing' },
   ],
   during: [
-    { id: 'd-dtr', type: 'file', name: 'Daily Time Record', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'd-dtr', type: 'file', name: 'Daily Time Record', link: 'https://drive.google.com/file/d/1KE7KrgRCCqfXERXD-LbrRVB4DvK4yLQx/view?usp=sharing' },
     {
       id: 'd-weekly-reports',
       type: 'folder',
@@ -84,12 +83,12 @@ const folderFiles = {
     },
   ],
   after: [
-    { id: 'a1', type: 'file', name: 'Training Supervisor Form', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a1', type: 'file', name: 'Evaluation Instrument for Training Supervisor', link: 'https://drive.google.com/file/d/10IQpe4_DG231wkJbRcOrRb_tub3aZU04/view?usp=sharing' },
     { id: 'a2', type: 'file', name: 'HTE Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a3', type: 'file', name: 'OJT Adviser Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a4', type: 'file', name: 'Trainee Performance', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a5', type: 'file', name: 'Performance Evaluation', link: 'PASTE_GDRAIVE_LINK_HERE' },
-    { id: 'a6', type: 'file', name: 'Certificate of Completion', link: 'PASTE_GDRAIVE_LINK_HERE' },
+    { id: 'a3', type: 'file', name: 'OJT Adviser Performance', link: 'https://drive.google.com/file/d/1sdRodHShgAdEgEnDqQtTcyxKg7o_v6Y-/view?usp=sharing' },
+    { id: 'a4', type: 'file', name: 'Trainee Performance Evaluation', link: 'https://drive.google.com/file/d/1WoA3b6Kmn4D0WTU5IaT7oJ74iG6c4YX1/view?usp=sharing' },
+    { id: 'a5', type: 'file', name: 'Evaluation Instrument for Student Intern', link: 'https://drive.google.com/file/d/1-acr6YFUhGR_CztoTycl6EYOka3KmbcG/view?usp=sharing' },
+    { id: 'a6', type: 'file', name: 'Certificate of Completion', link: 'https://drive.google.com/file/d/1QM9vm7ctcmi5atufxX5nrPYbGi6xYxSZ/view?usp=drive_link' },
   ]
 };
 
